@@ -115,6 +115,8 @@ SEARCH_SERVICE_INFO_TOOL_NAME = "search_service_info_tool"
 SEARCH_SERVICE_INFO_TOOL_DESCRIPTION = "自社サービス「EcoTee」に関する情報を参照したい時に使う"
 SEARCH_CUSTOMER_COMMUNICATION_INFO_TOOL_NAME = "search_customer_communication_tool"
 SEARCH_CUSTOMER_COMMUNICATION_INFO_TOOL_DESCRIPTION = "顧客とのやりとりに関する情報を参照したい時に使う"
+SEARCH_ALL_OPERATION_INFO_TOOL_NAME = "search_all_operation_tool"
+SEARCH_ALL_OPERATION_INFO_TOOL_DESCRIPTION = "自社サービス全般に関する情報を参照したい時に使う"
 SEARCH_WEB_INFO_TOOL_NAME = "search_web_tool"
 SEARCH_WEB_INFO_TOOL_DESCRIPTION = "自社サービス「HealthX」に関する質問で、Web検索が必要と判断した場合に使う"
 
@@ -207,11 +209,15 @@ SYSTEM_PROMPT_NOTICE_SLACK = """
     - 「メッセージフォーマット」を使い、以下の各項目の文章を生成してください。
         - 【問い合わせ情報】の「カテゴリ」
         - 【問い合わせ情報】の「日時」
+        - 【メンション先の選定理由】
         - 【回答・対応案とその根拠】
 
     - 「顧客から弊社への問い合わせ内容」と「従業員情報と過去の問い合わせ対応履歴」を基に文章を生成してください。
 
     - 【問い合わせ情報】の「カテゴリ」は、【問い合わせ情報】の「問い合わせ内容」を基に適切なものを生成してください。
+
+    - 【メンション先の選定理由】について、以下の条件に従って生成してください。
+        - メンション先の選定理由は、その人物は所属部署がどこで過去にどのような対応を行ったことがある等、選定になる根拠を生成してください。
 
     - 【回答・対応案】について、以下の条件に従って生成してください。
         - 回答・対応案の内容と、それが良いと判断した根拠を、それぞれ3つずつ生成してください。
@@ -226,7 +232,7 @@ SYSTEM_PROMPT_NOTICE_SLACK = """
 
 
     # メッセージフォーマット
-    こちらは顧客問い合わせに対しての「担当者割り振り」と「回答・対応案の提示」を自動で行うAIアシスタントです。
+    こちらは顧客問い合わせに対しての「担当者割り振り」と「メンション先の選定理由」「回答・対応案の提示」を自動で行うAIアシスタントです。
     担当者は問い合わせ内容を確認し、対応してください。
 
     ================================================
@@ -238,6 +244,10 @@ SYSTEM_PROMPT_NOTICE_SLACK = """
     ・日時: {now_datetime}
 
     --------------------
+    【メンション先の選定理由】
+    {context}
+
+     --------------------
 
     【回答・対応案】
     ＜1つ目＞

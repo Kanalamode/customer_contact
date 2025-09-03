@@ -29,7 +29,8 @@ from langchain_community.retrievers import BM25Retriever
 from langchain.retrievers import EnsembleRetriever
 from docx import Document
 from langchain.output_parsers import CommaSeparatedListOutputParser
-from langchain import LLMChain
+#from langchain import LLMChain
+from langchain.chains import LLMChain  # 推奨
 import datetime
 import constants as ct
 
@@ -207,6 +208,23 @@ def run_customer_doc_chain(param):
 
     return ai_msg["answer"]
 
+def run_all_operation_doc_chain(param):
+    """
+    会社やサービス全般に関するデータ参照に特化したTool設定用の関数
+
+    Args:
+        param: ユーザー入力値
+
+    Returns:
+        LLMからの回答
+    """
+    # 会社やサービス全般に関するデータ参照に特化したChainを実行してLLMからの回答取得
+    ai_msg = st.session_state.all_operation_doc_chain.invoke({"input": param, "chat_history": st.session_state.chat_history})
+
+    # 会話履歴への追加
+    st.session_state.chat_history.extend([HumanMessage(content=param), AIMessage(content=ai_msg["answer"])])
+
+    return ai_msg["answer"]
 
 def delete_old_conversation_log(result):
     """
